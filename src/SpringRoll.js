@@ -1,13 +1,15 @@
 import React from "react"
 import { firestore } from "./config"
-import { Card, Table, Badge, CardTitle } from "reactstrap"
+import { Card, Table, Badge, CardTitle, Button, Spinner } from "reactstrap"
 import Noodle from "./Noodle"
 
 class SpringRoll extends React.Component {
     constructor () {
         super ()
         this.state = {
-            allOrders: []
+            allOrders: [],
+            isPageLoading: true,
+            isButton: false
         }
     }
     componentDidMount () {
@@ -16,12 +18,13 @@ class SpringRoll extends React.Component {
             Snapshot.forEach(document => {
                 temp.push(document.data())
             })
-            this.setState ({allOrders: temp})
+            this.setState ({allOrders: temp, isPageLoading: false})
         })
     }
     render () {
         const updatePrepStatus = (eachOrder) => {
             let finalStatus = true
+            this.setState ({isButton: true})
             eachOrder.order.map((eachItem, index) => {
                 if (eachItem.prepStatus === false)
                     finalStatus = false
@@ -47,6 +50,7 @@ class SpringRoll extends React.Component {
         }
         return (
             <div style={{marginTop: "10px", display:"flex", justifyContent:"center", flexDirection:"column", alignItems:"center"}}>
+                {this.state.isPageLoading ? <Spinner /> : 
                 <Card style={{width:"max-content", padding:"10px"}}>
                     <CardTitle tag="h5">
                         ROLL ORDERS
@@ -78,7 +82,7 @@ class SpringRoll extends React.Component {
                                             })}
                                         </td>
                                         <td>
-                                            <Badge onClick={() => updatePrepStatus(each)} style={{cursor:"pointer", padding:"10px", margin:"10px"}} color="success">DONE</Badge><br />
+                                            <Button disabled={this.state.isButton} onClick={() => updatePrepStatus(each)} style={{cursor:"pointer", padding:"10px", margin:"10px"}} color="success">{this.state.isButton ? 'LOADING': 'DONE'}</Button><br />
                                         </td>
                                     </tr>
                                 )
@@ -86,6 +90,7 @@ class SpringRoll extends React.Component {
                             </tbody>
                         </Table>
                 </Card>
+                }
                 <Noodle />
             </div>
         )

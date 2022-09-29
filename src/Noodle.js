@@ -1,12 +1,14 @@
 import React from "react"
 import { firestore } from "./config"
-import { Card, Table, Badge, CardTitle } from "reactstrap"
+import { Card, Table, Badge, CardTitle, Button, Spinner } from "reactstrap"
 
 class Noodle extends React.Component {
     constructor () {
         super ()
         this.state = {
-            allOrders: []
+            allOrders: [],
+            isButton: false,
+            isPageLoading: true
         }
     }
     componentDidMount () {
@@ -15,11 +17,12 @@ class Noodle extends React.Component {
             Snapshot.forEach(document => {
                 temp.push(document.data())
             })
-            this.setState ({allOrders: temp})
+            this.setState ({allOrders: temp, isPageLoading: false})
         })
     }
     render () {
         const updatePrepStatus = (eachOrder) => {
+            this.setState ({isButton: true})
             let finalStatus = true
             eachOrder.order.map((eachItem, index) => {
                 if (eachItem.prepStatus === false)
@@ -46,6 +49,7 @@ class Noodle extends React.Component {
         // }
         return (
             <div style={{marginTop: "10px", display:"flex", justifyContent:"center"}}>
+                {this.state.isPageLoading ? <Spinner /> : 
                 <Card style={{width:"max-content", padding:"10px"}}>
                     <CardTitle tag="h5">
                         NOODLE ORDERS
@@ -77,7 +81,7 @@ class Noodle extends React.Component {
                                             })}
                                         </td>
                                         <td>
-                                            <Badge onClick={() => updatePrepStatus(each)} style={{cursor:"pointer", padding:"10px", margin:"10px"}} color="success">DONE</Badge><br />
+                                            <Button disabled={this.state.isButton} onClick={() => updatePrepStatus(each)} style={{cursor:"pointer", padding:"10px", margin:"10px"}} color="success">{this.state.isButton ? 'LOADING' : 'DONE'}</Button><br />
                                         </td>
                                     </tr>
                                 )
@@ -85,6 +89,7 @@ class Noodle extends React.Component {
                             </tbody>
                         </Table>
                 </Card>
+                }
             </div>
         )
     }

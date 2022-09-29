@@ -1,32 +1,35 @@
 import React from "react"
 import { firestore } from "./config"
-import { Card, Table, Badge, CardTitle } from "reactstrap"
+import { Card, Table, Badge, CardTitle, Button, Spinner } from "reactstrap"
 
 class AllOrders extends React.Component {
     constructor () {
         super ()
         this.state = {
-            allOrders: []
+            allOrders: [],
+            isPageLoading: true,
+            isButton: false
         }
     }
     componentDidMount () {
-        firestore.collection("orders").get().then(Snapshot => {
+        firestore.collection("orders").where("servedStatus", "==", false).get().then(Snapshot => {
             let temp = []
             Snapshot.forEach(document => {
                 temp.push(document.data())
             })
-            this.setState ({allOrders: temp})
+            this.setState ({allOrders: temp, isPageLoading: false})
         })
     }
     render () {
         const onServeHandler = (eachOrder) => {
-            console.log(eachOrder);
+            this.setState ({isButton: true})
             firestore.collection("orders").doc(`${eachOrder.orderNumber}`).update({
                 servedStatus: true
             }).then(() => window.location.reload()).catch(err => console.log(err.message))
         }
         return (
             <div style={{marginTop: "10px", display:"flex", justifyContent:"center"}}>
+                {this.state.isPageLoading ? <Spinner /> : 
                 <Card style={{width:"max-content", padding:"10px"}}>
                     <CardTitle tag="h5">
                         ALL ORDERS
@@ -61,7 +64,7 @@ class AllOrders extends React.Component {
                                             {each.prepStatus ? <Badge color="success">PREPARED</Badge> : <Badge color="warning">WAITING</Badge> }
                                         </td>
                                         <td>
-                                            {!each.serveStatus ? <Badge onClick={() => onServeHandler(each)} style={{margin:"10px", padding:"10px", cursor:"pointer"}} color="success">DELIVER</Badge> : <Badge color="warning">WAITING</Badge> }
+                                            {!each.serveStatus ? <Button disabled={this.state.isButton} onClick={() => onServeHandler(each)} style={{margin:"10px", padding:"10px", cursor:"pointer"}} color="success">{this.state.isButton ? 'LOADING' : 'DELIVER'}</Button> : <Badge color="warning">WAITING</Badge> }
                                         </td>
                                     </tr>
                                 )
@@ -69,6 +72,7 @@ class AllOrders extends React.Component {
                             </tbody>
                         </Table>
                 </Card>
+                }
             </div>
         )
     }

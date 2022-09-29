@@ -1,12 +1,14 @@
 import React from "react"
 import { firestore } from "./config"
-import { Card, Table, Badge, CardTitle } from "reactstrap"
+import { Card, Table, Badge, CardTitle, Spinner, Button } from "reactstrap"
 
 class Milkshakes extends React.Component {
     constructor () {
         super ()
         this.state = {
-            allOrders: []
+            allOrders: [],
+            isPageLoading: true,
+            isButton:  false
         }
     }
     componentDidMount () {
@@ -15,12 +17,13 @@ class Milkshakes extends React.Component {
             Snapshot.forEach(document => {
                 temp.push(document.data())
             })
-            this.setState ({allOrders: temp})
+            this.setState ({allOrders: temp, isPageLoading: false})
         })
     }
     render () {
         const updatePrepStatus = (eachOrder) => {
             let finalStatus = true
+            this.setState ({isButton: true})
             eachOrder.order.map((eachItem, index) => {
                 if (eachItem.prepStatus === false)
                     finalStatus = false
@@ -46,6 +49,7 @@ class Milkshakes extends React.Component {
         }
         return (
             <div style={{marginTop: "10px", display:"flex", justifyContent:"center"}}>
+                {this.state.isPageLoading ? <Spinner /> : 
                 <Card style={{width:"max-content", padding:"10px"}}>
                     <CardTitle tag="h5">
                         MILKSHAKE ORDERS
@@ -77,7 +81,7 @@ class Milkshakes extends React.Component {
                                             })}
                                         </td>
                                         <td>
-                                            <Badge onClick={() => updatePrepStatus(each)} style={{cursor:"pointer", padding:"10px", margin:"10px"}} color="success">DONE</Badge><br />
+                                            <Button disabled={this.state.isButton} onClick={() => updatePrepStatus(each)} style={{cursor:"pointer", padding:"10px", margin:"10px"}} color="success">{this.state.isButton ? 'LOADING' : 'DONE'}</Button><br />
                                         </td>
                                     </tr>
                                 )
@@ -85,6 +89,7 @@ class Milkshakes extends React.Component {
                             </tbody>
                         </Table>
                 </Card>
+                }
             </div>
         )
     }
