@@ -1,6 +1,7 @@
 import React from "react"
 import { firestore } from "./config"
 import { Card, Table, Badge, CardTitle } from "reactstrap"
+import Noodle from "./Noodle"
 
 class SpringRoll extends React.Component {
     constructor () {
@@ -45,10 +46,10 @@ class SpringRoll extends React.Component {
             console.log(eachOrder);
         }
         return (
-            <div style={{marginTop: "10px", display:"flex", justifyContent:"center"}}>
+            <div style={{marginTop: "10px", display:"flex", justifyContent:"center", flexDirection:"column", alignItems:"center"}}>
                 <Card style={{width:"max-content", padding:"10px"}}>
                     <CardTitle tag="h5">
-                        MILKSHAKE ORDERS
+                        ROLL ORDERS
                     </CardTitle>
                         <Table bordered={true}>
                             <thead>
@@ -85,6 +86,7 @@ class SpringRoll extends React.Component {
                             </tbody>
                         </Table>
                 </Card>
+                <Noodle />
             </div>
         )
     }

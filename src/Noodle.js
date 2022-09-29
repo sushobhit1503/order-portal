@@ -33,22 +33,22 @@ class Noodle extends React.Component {
             }).then(() => {window.location.reload()}).catch(err => console.log(err.message))
             console.log(eachOrder);
         }
-        const downgradePrepStatus = (eachOrder) => {
-            eachOrder.order.map((eachItem, index) => {
-                if (eachItem.itemName === "Veg Noodles")
-                    eachOrder.order[index].prepStatus = false
-            })
-            firestore.collection("orders").doc(`${eachOrder.orderNumber}`).update ({
-                order: eachOrder.order,
-                prepStatus: false
-            }).then(() => {window.location.reload()}).catch(err => console.log(err.message))
-            console.log(eachOrder);
-        }
+        // const downgradePrepStatus = (eachOrder) => {
+        //     eachOrder.order.map((eachItem, index) => {
+        //         if (eachItem.itemName === "Veg Noodles")
+        //             eachOrder.order[index].prepStatus = false
+        //     })
+        //     firestore.collection("orders").doc(`${eachOrder.orderNumber}`).update ({
+        //         order: eachOrder.order,
+        //         prepStatus: false
+        //     }).then(() => {window.location.reload()}).catch(err => console.log(err.message))
+        //     console.log(eachOrder);
+        // }
         return (
             <div style={{marginTop: "10px", display:"flex", justifyContent:"center"}}>
                 <Card style={{width:"max-content", padding:"10px"}}>
                     <CardTitle tag="h5">
-                        MILKSHAKE ORDERS
+                        NOODLE ORDERS
                     </CardTitle>
                         <Table bordered={true}>
                             <thead>

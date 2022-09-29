@@ -59,7 +59,7 @@ class AddItems extends React.Component {
                                 {each.itemName}
                             </td>
                             <td>
-                                <Input size="sm" />
+                                <Input onChange={onChangeHandler} name={each.itemName} value={this.state.quantity[index]} size="sm" />
                             </td>
                         </tr>
                         )

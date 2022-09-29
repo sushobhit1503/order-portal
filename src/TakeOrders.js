@@ -1,5 +1,5 @@
 import React from "react"
-import { Button, Card, CardTitle, Input, Modal, ModalBody, Table } from "reactstrap"
+import { Button, Card, CardTitle, Input, Modal, ModalBody, Spinner, Table } from "reactstrap"
 import { firestore } from "./config"
 import firebase from "./config"
 
@@ -14,7 +14,8 @@ class TakeOrders extends React.Component {
             total: 0,
             orderNumber: 0,
             isModalOpen: false,
-            isLoading: false
+            isLoading: false,
+            isPageLoading: true
         }
     }
     componentDidMount () {
@@ -25,7 +26,7 @@ class TakeOrders extends React.Component {
             })
             this.setState ({allItems: temp, order: temp})
             firestore.collection("orderNumber").doc("IDS").get().then(document => {
-                this.setState ({orderNumber: document.data().orderNumber})
+                this.setState ({orderNumber: document.data().orderNumber, isPageLoading: false})
             }).catch ((err) => console.log(err.message))
         }).catch(err => console.log(err.message))
     }
@@ -43,6 +44,11 @@ class TakeOrders extends React.Component {
                     }
                     finalOrder.push(object)
                 }
+            })
+            finalOrder.map(eachOrder => {
+                firestore.collection("items").doc(`${eachOrder.itemName}`).update ({
+                    itemQuantity: firebase.firestore.FieldValue.increment(-eachOrder.quantity)
+                }).then(() => {}).catch((err) => console.log(err.message))
             })
             firestore.collection("orders").doc(`${this.state.orderNumber}`).set ({
                 order: finalOrder,
@@ -75,6 +81,7 @@ class TakeOrders extends React.Component {
         }
         return (
             <div style={{marginTop: "10px", display:"flex", justifyContent:"center"}}>
+                {this.state.isPageLoading ? <Spinner /> : 
                 <Card style={{width:"max-content", padding:"10px"}}>
                     <CardTitle tag="h5">
                         TAKE ORDER
@@ -113,6 +120,7 @@ class TakeOrders extends React.Component {
                             LOADING
                         </Button>}
                 </Card>
+                }
                 <Modal isOpen={this.state.isModalOpen}>
                     <ModalBody tag="h5">
                         ORDER NO. {this.state.orderNumber} CONFIRMED <br />
