@@ -32,8 +32,20 @@ class TakeOrders extends React.Component {
     render () {
         const onSubmitHandler = () => {
             this.setState ({isLoading: true})
+            const { order, selectedItems } = this.state
+            let finalOrder = []
+            selectedItems.map((eachItem, index) => {
+                if (eachItem === true) {
+                    let object = {
+                        itemName: order[index].itemName,
+                        quantity: order[index].quantity,
+                        prepStatus: false
+                    }
+                    finalOrder.push(object)
+                }
+            })
             firestore.collection("orders").doc(`${this.state.orderNumber}`).set ({
-                order: this.state.order,
+                order: finalOrder,
                 orderNumber: this.state.orderNumber,
                 total: this.state.total,
                 prepStatus: false,

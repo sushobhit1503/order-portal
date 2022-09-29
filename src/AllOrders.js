@@ -19,6 +19,12 @@ class AllOrders extends React.Component {
         })
     }
     render () {
+        const onServeHandler = (eachOrder) => {
+            console.log(eachOrder);
+            firestore.collection("orders").doc(`${eachOrder.orderNumber}`).update({
+                servedStatus: true
+            }).then(() => window.location.reload()).catch(err => console.log(err.message))
+        }
         return (
             <div style={{marginTop: "10px", display:"flex", justifyContent:"center"}}>
                 <Card style={{width:"max-content", padding:"10px"}}>
@@ -31,7 +37,7 @@ class AllOrders extends React.Component {
                                     <th>ORDER NO.</th>
                                     <th>NAME</th>
                                     <th>PREP STATUS</th>
-                                    <th>SERVE STATUS</th>
+                                    <th>DELIVER</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -45,7 +51,7 @@ class AllOrders extends React.Component {
                                             {each.order.map(eachItem => {
                                                 if (eachItem.quantity)
                                                     return (
-                                                        <div>
+                                                        <div key={each.itemName}>
                                                             {eachItem.itemName} - {eachItem.quantity}
                                                         </div>
                                                     )
@@ -55,7 +61,7 @@ class AllOrders extends React.Component {
                                             {each.prepStatus ? <Badge color="success">PREPARED</Badge> : <Badge color="warning">WAITING</Badge> }
                                         </td>
                                         <td>
-                                            {each.serveStatus ? <Badge color="success">DELIVERED</Badge> : <Badge color="warning">WAITING</Badge> }
+                                            {!each.serveStatus ? <Badge onClick={() => onServeHandler(each)} style={{margin:"10px", padding:"10px", cursor:"pointer"}} color="success">DELIVER</Badge> : <Badge color="warning">WAITING</Badge> }
                                         </td>
                                     </tr>
                                 )

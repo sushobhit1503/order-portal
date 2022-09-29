@@ -2,7 +2,7 @@ import React from "react"
 import { firestore } from "./config"
 import { Card, Table, Badge, CardTitle } from "reactstrap"
 
-class Milkshakes extends React.Component {
+class SpringRoll extends React.Component {
     constructor () {
         super ()
         this.state = {
@@ -24,7 +24,7 @@ class Milkshakes extends React.Component {
             eachOrder.order.map((eachItem, index) => {
                 if (eachItem.prepStatus === false)
                     finalStatus = false
-                if (eachItem.itemName === "Bourbon Milkshake" || eachItem.itemName === "Oreo Milkshake")
+                if (eachItem.itemName === "Veg Spring Roll" || eachItem.itemName === "Veg Cheese Spring Roll")
                     eachOrder.order[index].prepStatus = true
             })
             firestore.collection("orders").doc(`${eachOrder.orderNumber}`).update ({
@@ -35,7 +35,7 @@ class Milkshakes extends React.Component {
         }
         const downgradePrepStatus = (eachOrder) => {
             eachOrder.order.map((eachItem, index) => {
-                if (eachItem.itemName === "Bourbon Milkshake" || eachItem.itemName === "Oreo Milkshake")
+                if (eachItem.itemName === "Veg Spring Roll" || eachItem.itemName === "Veg Cheese Spring Roll")
                     eachOrder.order[index].prepStatus = false
             })
             firestore.collection("orders").doc(`${eachOrder.orderNumber}`).update ({
@@ -67,7 +67,7 @@ class Milkshakes extends React.Component {
                                         </td>
                                         <td>
                                             {each.order.map(eachItem => {
-                                                if (eachItem.quantity && eachItem.itemName.includes("Milkshake"))
+                                                if (eachItem.quantity && eachItem.itemName.includes("Spring Roll"))
                                                     return (
                                                         <div>
                                                             {eachItem.itemName} - {eachItem.quantity} <br />
@@ -90,4 +90,4 @@ class Milkshakes extends React.Component {
     }
 }
 
-export default Milkshakes
+export default SpringRoll

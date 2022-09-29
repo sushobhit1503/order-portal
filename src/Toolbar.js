@@ -21,17 +21,23 @@ export default function Toolbar() {
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="me-auto" navbar>
-            <NavItem>
+            {/* <NavItem>
               <NavLink href="/add-items/">ADD ITEM</NavLink>
-            </NavItem>
+            </NavItem> */}
             <NavItem>
               <NavLink href="/take-orders">TAKE ORDERS</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/all-orders">ALL ORDERS</NavLink>
+              <NavLink href="/">ALL ORDERS</NavLink>
             </NavItem>
             <NavItem>
               <NavLink href="/milkshakes">MILKSHAKES</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href="/spring-roll">SPRING ROLLS</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href="/noodles">NOODLES</NavLink>
             </NavItem>
           </Nav>
         </Collapse>

@@ -1,5 +1,5 @@
 import React from "react"
-import { CardTitle, Card, Input, Button } from "reactstrap"
+import { CardTitle, Card, Input, Button, Table } from "reactstrap"
 import { firestore } from "./config"
 
 class AddItems extends React.Component {
@@ -8,8 +8,18 @@ class AddItems extends React.Component {
         this.state = {
             itemName: "",
             itemQuantity: undefined,
-            itemPrice: undefined
+            itemPrice: undefined,
+            allItems: []
         }
+    }
+    componentDidMount () {
+        firestore.collection("items").get().then(Snapshot => {
+            let temp = []
+            Snapshot.forEach (document => {
+                temp.push(document.data())
+            })
+            this.setState ({allItems: temp})
+        })
     }
     render () {
         const onChangeHandler = (event) => {
@@ -25,7 +35,7 @@ class AddItems extends React.Component {
             }).then(() => window.location.reload()).catch(err => console.log(err.message))
         }
         return (
-            <div style={{display:"flex", justifyContent:"center"}}>
+            <div style={{display:"flex", alignItems:"center", flexDirection:"column"}}>
                 <Card style={{width: "250px", padding:"10px", marginTop:"20px"}}>
                     <CardTitle tag="h5">
                         ADD ITEMS
@@ -36,9 +46,31 @@ class AddItems extends React.Component {
                     <Button onClick={onSubmitHandler} color="success">
                         SUBMIT
                     </Button>
-            </Card>
-        </div>
-    )
+                </Card>
+                <Card style={{width: "250px", padding:"10px", marginTop:"20px"}}>
+                    <CardTitle tag="h5">
+                        ADD STOCK
+                    </CardTitle>
+                    <Table bordered={true}>
+                    {this.state.allItems.map((each, index) =>{
+                        return (
+                        <tr style={{padding:"10px"}} key={each.itemName}>
+                            <td>
+                                {each.itemName}
+                            </td>
+                            <td>
+                                <Input size="sm" />
+                            </td>
+                        </tr>
+                        )
+                    })}
+                    </Table>
+                    <Button onClick={onSubmitHandler} color="success">
+                        SUBMIT
+                    </Button>
+                </Card>
+            </div>
+        )
     }
 }
 
