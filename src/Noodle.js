@@ -18,6 +18,10 @@ class Noodle extends React.Component {
                 temp.push(document.data())
             })
             this.setState ({allOrders: temp, isPageLoading: false})
+            const interval = setInterval(() => {
+                window.location.reload()
+            },60*1000);
+            return () => clearInterval(interval);
         })
     }
     render () {
