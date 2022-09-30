@@ -55,7 +55,8 @@ class TakeOrders extends React.Component {
                 orderNumber: this.state.orderNumber,
                 total: this.state.total,
                 prepStatus: false,
-                servedStatus: false
+                servedStatus: false,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
             }).then(() => {
                 this.setState ({isModalOpen: true})
                 firestore.collection("orderNumber").doc("IDS").update ({

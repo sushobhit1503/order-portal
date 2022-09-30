@@ -53,9 +53,9 @@ class SpringRoll extends React.Component {
             console.log(eachOrder);
         }
         return (
-            <div style={{marginTop: "10px", display:"flex", justifyContent:"center", flexDirection:"column", alignItems:"center"}}>
+            <div style={{marginTop: "10px", display:"flex", justifyContent:"center", flexWrap:"wrap"}}>
                 {this.state.isPageLoading ? <Spinner /> : 
-                <Card style={{width:"max-content", padding:"10px"}}>
+                <Card style={{width:"max-content", padding:"10px", margin:"10px"}}>
                     <CardTitle tag="h5">
                         ROLL ORDERS
                     </CardTitle>
