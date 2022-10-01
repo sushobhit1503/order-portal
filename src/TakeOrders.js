@@ -19,7 +19,7 @@ class TakeOrders extends React.Component {
         }
     }
     componentDidMount () {
-        firestore.collection("items").where("status", "==", true).get().then((Snapshot) => {
+        firestore.collection("items").where("itemQuantity", "!=", 0).get().then((Snapshot) => {
             let temp = []
             Snapshot.forEach((document) => {
                 temp.push(document.data())
@@ -47,7 +47,7 @@ class TakeOrders extends React.Component {
             })
             finalOrder.map(eachOrder => {
                 firestore.collection("items").doc(`${eachOrder.itemName}`).update ({
-                    itemQuantity: firebase.firestore.FieldValue.increment(-eachOrder.quantity)
+                    itemQuantity: firebase.firestore.FieldValue.increment(-1)
                 }).then(() => {}).catch((err) => console.log(err.message))
             })
             firestore.collection("orders").doc(`${this.state.orderNumber}`).set ({

@@ -1,15 +1,14 @@
 import React from "react"
 import { firestore } from "./config"
 import { Card, Table, Badge, CardTitle, Button, Spinner } from "reactstrap"
-import Noodle from "./Noodle"
 
-class SpringRoll extends React.Component {
+class Mocktail extends React.Component {
     constructor () {
         super ()
         this.state = {
             allOrders: [],
-            isPageLoading: true,
-            isButton: false
+            isButton: false,
+            isPageLoading: true
         }
     }
     componentDidMount () {
@@ -27,12 +26,12 @@ class SpringRoll extends React.Component {
     }
     render () {
         const updatePrepStatus = (eachOrder) => {
-            let finalStatus = true
             this.setState ({isButton: true})
+            let finalStatus = true
             eachOrder.order.map((eachItem, index) => {
                 if (eachItem.prepStatus === false)
                     finalStatus = false
-                if (eachItem.itemName === "Veg Spring Roll" || eachItem.itemName === "Veg Cheese Spring Roll")
+                if (eachItem.itemName.includes("Mocktail"))
                     eachOrder.order[index].prepStatus = true
             })
             firestore.collection("orders").doc(`${eachOrder.orderNumber}`).update ({
@@ -41,23 +40,23 @@ class SpringRoll extends React.Component {
             }).then(() => {window.location.reload()}).catch(err => console.log(err.message))
             console.log(eachOrder);
         }
-        const downgradePrepStatus = (eachOrder) => {
-            eachOrder.order.map((eachItem, index) => {
-                if (eachItem.itemName === "Veg Spring Roll" || eachItem.itemName === "Veg Cheese Spring Roll")
-                    eachOrder.order[index].prepStatus = false
-            })
-            firestore.collection("orders").doc(`${eachOrder.orderNumber}`).update ({
-                order: eachOrder.order,
-                prepStatus: false
-            }).then(() => {window.location.reload()}).catch(err => console.log(err.message))
-            console.log(eachOrder);
-        }
+        // const downgradePrepStatus = (eachOrder) => {
+        //     eachOrder.order.map((eachItem, index) => {
+        //         if (eachItem.itemName === "Veg Noodles")
+        //             eachOrder.order[index].prepStatus = false
+        //     })
+        //     firestore.collection("orders").doc(`${eachOrder.orderNumber}`).update ({
+        //         order: eachOrder.order,
+        //         prepStatus: false
+        //     }).then(() => {window.location.reload()}).catch(err => console.log(err.message))
+        //     console.log(eachOrder);
+        // }
         return (
-            <div style={{marginTop: "10px", display:"flex", justifyContent:"center", flexWrap:"wrap"}}>
+            <div style={{marginTop: "10px", display:"flex", justifyContent:"center"}}>
                 {this.state.isPageLoading ? <Spinner /> : 
-                <Card style={{width:"max-content", padding:"10px", margin:"10px"}}>
+                <Card style={{width:"max-content", padding:"10px"}}>
                     <CardTitle tag="h5">
-                        ROLL ORDERS
+                        NOODLE ORDERS
                     </CardTitle>
                         <Table bordered={true}>
                             <thead>
@@ -76,7 +75,7 @@ class SpringRoll extends React.Component {
                                         </td>
                                         <td>
                                             {each.order.map(eachItem => {
-                                                if (eachItem.quantity && eachItem.itemName.includes("Spring Roll"))
+                                                if (eachItem.quantity && eachItem.itemName.includes("Mocktail"))
                                                     return (
                                                         <div>
                                                             {eachItem.itemName} - {eachItem.quantity} <br />
@@ -86,7 +85,7 @@ class SpringRoll extends React.Component {
                                             })}
                                         </td>
                                         <td>
-                                            <Button disabled={this.state.isButton} onClick={() => updatePrepStatus(each)} style={{cursor:"pointer", padding:"10px", margin:"10px"}} color="success">{this.state.isButton ? 'LOADING': 'DONE'}</Button><br />
+                                            <Button disabled={this.state.isButton} onClick={() => updatePrepStatus(each)} style={{cursor:"pointer", padding:"10px", margin:"10px"}} color="success">{this.state.isButton ? 'LOADING' : 'DONE'}</Button><br />
                                         </td>
                                     </tr>
                                 )
@@ -95,10 +94,9 @@ class SpringRoll extends React.Component {
                         </Table>
                 </Card>
                 }
-                <Noodle />
             </div>
         )
     }
 }
 
-export default SpringRoll
+export default Mocktail

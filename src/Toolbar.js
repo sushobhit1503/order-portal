@@ -34,7 +34,10 @@ export default function Toolbar() {
               <NavLink href="/milkshakes">MILKSHAKES</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/spring-roll">SPRING ROLLS</NavLink>
+              <NavLink href="/burger">BURGER</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href="/mocktail">MOCKTAIL</NavLink>
             </NavItem>
             <NavItem>
               <NavLink href="/noodles">NOODLES</NavLink>

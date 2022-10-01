@@ -47,28 +47,6 @@ class AddItems extends React.Component {
                         SUBMIT
                     </Button>
                 </Card>
-                <Card style={{width: "250px", padding:"10px", marginTop:"20px"}}>
-                    <CardTitle tag="h5">
-                        ADD STOCK
-                    </CardTitle>
-                    <Table bordered={true}>
-                    {this.state.allItems.map((each, index) =>{
-                        return (
-                        <tr style={{padding:"10px"}} key={each.itemName}>
-                            <td>
-                                {each.itemName}
-                            </td>
-                            <td>
-                                <Input onChange={onChangeHandler} name={each.itemName} value={this.state.quantity[index]} size="sm" />
-                            </td>
-                        </tr>
-                        )
-                    })}
-                    </Table>
-                    <Button onClick={onSubmitHandler} color="success">
-                        SUBMIT
-                    </Button>
-                </Card>
             </div>
         )
     }

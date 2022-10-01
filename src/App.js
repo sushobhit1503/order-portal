@@ -5,7 +5,8 @@ import AddItems from './AddItems';
 import TakeOrders from "./TakeOrders"
 import AllOrders from './AllOrders';
 import Milkshakes from './Milkshakes';
-import SpringRoll from './SpringRoll';
+import Burger from './Burger';
+
 import Noodle from './Noodle';
 
 function App() {
@@ -17,8 +18,9 @@ function App() {
             <Route exact path="/add-items" element={<AddItems />} />
             <Route exact path="/take-orders" element={<TakeOrders />} />
             <Route exact path="/milkshakes" element={<Milkshakes />} />
-            <Route exact path="/spring-roll" element={<SpringRoll />} />
+            <Route exact path="/burger" element={<Burger />} />
             <Route exact path="/noodles" element={<Noodle />} />
+            <Route exact path="/mocktail" element={<Noodle />} />
         </Routes>
     </div>
   );
