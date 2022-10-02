@@ -2,7 +2,7 @@ import React from "react"
 import { firestore } from "./config"
 import { Card, Table, Badge, CardTitle, Button, Spinner } from "reactstrap"
 
-class Mocktail extends React.Component {
+class Samosa extends React.Component {
     constructor () {
         super ()
         this.state = {
@@ -31,7 +31,7 @@ class Mocktail extends React.Component {
             eachOrder.order.map((eachItem, index) => {
                 if (eachItem.prepStatus === false)
                     finalStatus = false
-                if (eachItem.itemName.includes("Mocktail"))
+                if (eachItem.itemName.includes("Samosa"))
                     eachOrder.order[index].prepStatus = true
             })
             firestore.collection("orders").doc(`${eachOrder.orderNumber}`).update ({
@@ -56,7 +56,7 @@ class Mocktail extends React.Component {
                 {this.state.isPageLoading ? <Spinner /> : 
                 <Card style={{width:"max-content", padding:"10px"}}>
                     <CardTitle tag="h5">
-                        NOODLE ORDERS
+                        SAMOSA ORDERS
                     </CardTitle>
                         <Table bordered={true}>
                             <thead>
@@ -75,7 +75,7 @@ class Mocktail extends React.Component {
                                         </td>
                                         <td>
                                             {each.order.map(eachItem => {
-                                                if (eachItem.quantity && eachItem.itemName.includes("Mocktail"))
+                                                if (eachItem.quantity && eachItem.itemName.includes("Samosa"))
                                                     return (
                                                         <div>
                                                             {eachItem.itemName} - {eachItem.quantity} <br />
@@ -99,4 +99,4 @@ class Mocktail extends React.Component {
     }
 }
 
-export default Mocktail
+export default Samosa

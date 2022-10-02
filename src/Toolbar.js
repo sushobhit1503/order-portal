@@ -31,16 +31,16 @@ export default function Toolbar() {
               <NavLink href="/">ALL ORDERS</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/milkshakes">MILKSHAKES</NavLink>
+              <NavLink href="/drinks">DRINKS</NavLink>
             </NavItem>
             <NavItem>
               <NavLink href="/burger">BURGER</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/mocktail">MOCKTAIL</NavLink>
+              <NavLink href="/chaat">CHAAT</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/noodles">NOODLES</NavLink>
+              <NavLink href="/samosa">SAMOSA</NavLink>
             </NavItem>
           </Nav>
         </Collapse>

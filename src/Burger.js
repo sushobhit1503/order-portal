@@ -1,7 +1,7 @@
 import React from "react"
 import { firestore } from "./config"
 import { Card, Table, Badge, CardTitle, Button, Spinner } from "reactstrap"
-import Noodle from "./Noodle"
+import Chaat from "./Chaat"
 
 class Burger extends React.Component {
     constructor () {
@@ -57,7 +57,7 @@ class Burger extends React.Component {
                 {this.state.isPageLoading ? <Spinner /> : 
                 <Card style={{width:"max-content", padding:"10px", margin:"10px"}}>
                     <CardTitle tag="h5">
-                        ROLL ORDERS
+                        BURGER ORDERS
                     </CardTitle>
                         <Table bordered={true}>
                             <thead>
@@ -95,7 +95,7 @@ class Burger extends React.Component {
                         </Table>
                 </Card>
                 }
-                <Noodle />
+                <Chaat />
             </div>
         )
     }

@@ -1,14 +1,14 @@
 import React from "react"
 import { firestore } from "./config"
-import { Card, Table, Badge, CardTitle, Spinner, Button } from "reactstrap"
+import { Card, Table, Badge, CardTitle, Button, Spinner } from "reactstrap"
 
-class Milkshakes extends React.Component {
+class Drinks extends React.Component {
     constructor () {
         super ()
         this.state = {
             allOrders: [],
-            isPageLoading: true,
-            isButton:  false
+            isButton: false,
+            isPageLoading: true
         }
     }
     componentDidMount () {
@@ -18,16 +18,20 @@ class Milkshakes extends React.Component {
                 temp.push(document.data())
             })
             this.setState ({allOrders: temp, isPageLoading: false})
+            const interval = setInterval(() => {
+                window.location.reload()
+            },60*1000);
+            return () => clearInterval(interval);
         })
     }
     render () {
         const updatePrepStatus = (eachOrder) => {
-            let finalStatus = true
             this.setState ({isButton: true})
+            let finalStatus = true
             eachOrder.order.map((eachItem, index) => {
                 if (eachItem.prepStatus === false)
                     finalStatus = false
-                if (eachItem.itemName === "Bourbon Milkshake" || eachItem.itemName === "Oreo Milkshake")
+                if (eachItem.itemName.includes("Drink"))
                     eachOrder.order[index].prepStatus = true
             })
             firestore.collection("orders").doc(`${eachOrder.orderNumber}`).update ({
@@ -36,23 +40,23 @@ class Milkshakes extends React.Component {
             }).then(() => {window.location.reload()}).catch(err => console.log(err.message))
             console.log(eachOrder);
         }
-        const downgradePrepStatus = (eachOrder) => {
-            eachOrder.order.map((eachItem, index) => {
-                if (eachItem.itemName === "Bourbon Milkshake" || eachItem.itemName === "Oreo Milkshake")
-                    eachOrder.order[index].prepStatus = false
-            })
-            firestore.collection("orders").doc(`${eachOrder.orderNumber}`).update ({
-                order: eachOrder.order,
-                prepStatus: false
-            }).then(() => {window.location.reload()}).catch(err => console.log(err.message))
-            console.log(eachOrder);
-        }
+        // const downgradePrepStatus = (eachOrder) => {
+        //     eachOrder.order.map((eachItem, index) => {
+        //         if (eachItem.itemName === "Veg Noodles")
+        //             eachOrder.order[index].prepStatus = false
+        //     })
+        //     firestore.collection("orders").doc(`${eachOrder.orderNumber}`).update ({
+        //         order: eachOrder.order,
+        //         prepStatus: false
+        //     }).then(() => {window.location.reload()}).catch(err => console.log(err.message))
+        //     console.log(eachOrder);
+        // }
         return (
             <div style={{marginTop: "10px", display:"flex", justifyContent:"center"}}>
                 {this.state.isPageLoading ? <Spinner /> : 
                 <Card style={{width:"max-content", padding:"10px"}}>
                     <CardTitle tag="h5">
-                        MILKSHAKE ORDERS
+                        DRINKS ORDERS
                     </CardTitle>
                         <Table bordered={true}>
                             <thead>
@@ -71,7 +75,7 @@ class Milkshakes extends React.Component {
                                         </td>
                                         <td>
                                             {each.order.map(eachItem => {
-                                                if (eachItem.quantity && eachItem.itemName.includes("Milkshake"))
+                                                if (eachItem.quantity && eachItem.itemName.includes("Drink"))
                                                     return (
                                                         <div>
                                                             {eachItem.itemName} - {eachItem.quantity} <br />
@@ -95,4 +99,4 @@ class Milkshakes extends React.Component {
     }
 }
 
-export default Milkshakes
+export default Drinks

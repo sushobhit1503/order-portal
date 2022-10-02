@@ -9,8 +9,8 @@ class TakeOrders extends React.Component {
         this.state = {
             allItems: [],
             order: [],
-            selectedItems: [false, false, false, false, false],
-            quantity: [1,1,1,1,1],
+            selectedItems: [false, false, false, false, false, false, false, false, false, false, false, false, false],
+            quantity: [1,1,1,1,1,1,1,1,1,1,1,1,1],
             total: 0,
             orderNumber: 0,
             isModalOpen: false,

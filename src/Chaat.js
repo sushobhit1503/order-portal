@@ -1,14 +1,14 @@
 import React from "react"
 import { firestore } from "./config"
-import { Card, Table, Badge, CardTitle, Button, Spinner } from "reactstrap"
+import { Card, Table, Badge, CardTitle, Spinner, Button } from "reactstrap"
 
-class Noodle extends React.Component {
+class Chaat extends React.Component {
     constructor () {
         super ()
         this.state = {
             allOrders: [],
-            isButton: false,
-            isPageLoading: true
+            isPageLoading: true,
+            isButton:  false
         }
     }
     componentDidMount () {
@@ -18,20 +18,16 @@ class Noodle extends React.Component {
                 temp.push(document.data())
             })
             this.setState ({allOrders: temp, isPageLoading: false})
-            const interval = setInterval(() => {
-                window.location.reload()
-            },60*1000);
-            return () => clearInterval(interval);
         })
     }
     render () {
         const updatePrepStatus = (eachOrder) => {
-            this.setState ({isButton: true})
             let finalStatus = true
+            this.setState ({isButton: true})
             eachOrder.order.map((eachItem, index) => {
                 if (eachItem.prepStatus === false)
                     finalStatus = false
-                if (eachItem.itemName === "Veg Noodles")
+                if (eachItem.itemName.includes("Chaat"))
                     eachOrder.order[index].prepStatus = true
             })
             firestore.collection("orders").doc(`${eachOrder.orderNumber}`).update ({
@@ -40,23 +36,23 @@ class Noodle extends React.Component {
             }).then(() => {window.location.reload()}).catch(err => console.log(err.message))
             console.log(eachOrder);
         }
-        // const downgradePrepStatus = (eachOrder) => {
-        //     eachOrder.order.map((eachItem, index) => {
-        //         if (eachItem.itemName === "Veg Noodles")
-        //             eachOrder.order[index].prepStatus = false
-        //     })
-        //     firestore.collection("orders").doc(`${eachOrder.orderNumber}`).update ({
-        //         order: eachOrder.order,
-        //         prepStatus: false
-        //     }).then(() => {window.location.reload()}).catch(err => console.log(err.message))
-        //     console.log(eachOrder);
-        // }
+        const downgradePrepStatus = (eachOrder) => {
+            eachOrder.order.map((eachItem, index) => {
+                if (eachItem.itemName.includes("Chaat"))
+                    eachOrder.order[index].prepStatus = false
+            })
+            firestore.collection("orders").doc(`${eachOrder.orderNumber}`).update ({
+                order: eachOrder.order,
+                prepStatus: false
+            }).then(() => {window.location.reload()}).catch(err => console.log(err.message))
+            console.log(eachOrder);
+        }
         return (
             <div style={{marginTop: "10px", display:"flex", justifyContent:"center"}}>
                 {this.state.isPageLoading ? <Spinner /> : 
                 <Card style={{width:"max-content", padding:"10px"}}>
                     <CardTitle tag="h5">
-                        NOODLE ORDERS
+                        CHAAT ORDERS
                     </CardTitle>
                         <Table bordered={true}>
                             <thead>
@@ -75,7 +71,7 @@ class Noodle extends React.Component {
                                         </td>
                                         <td>
                                             {each.order.map(eachItem => {
-                                                if (eachItem.quantity && eachItem.itemName.includes("Noodles"))
+                                                if (eachItem.quantity && eachItem.itemName.includes("Chaat"))
                                                     return (
                                                         <div>
                                                             {eachItem.itemName} - {eachItem.quantity} <br />
@@ -99,4 +95,4 @@ class Noodle extends React.Component {
     }
 }
 
-export default Noodle
+export default Chaat
