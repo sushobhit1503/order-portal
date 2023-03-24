@@ -9,9 +9,11 @@ class TakeOrders extends React.Component {
         this.state = {
             allItems: [],
             order: [],
-            selectedItems: [false, false, false, false, false, false, false, false, false, false, false, false, false],
-            quantity: [1,1,1,1,1,1,1,1,1,1,1,1,1],
+            selectedItems: [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false],
+            quantity: [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
             total: 0,
+            name: "",
+            paid: false,
             orderNumber: 0,
             isModalOpen: false,
             isLoading: false,
@@ -54,6 +56,8 @@ class TakeOrders extends React.Component {
                 order: finalOrder,
                 orderNumber: this.state.orderNumber,
                 total: this.state.total,
+                name: this.state.name,
+                paid: this.state.paid,
                 prepStatus: false,
                 servedStatus: false,
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
@@ -79,6 +83,13 @@ class TakeOrders extends React.Component {
                 })
                 this.setState ({total: total})
             })
+        }
+        const onChange = (event) => {
+            const {value, name} = event.target
+            this.setState ({[name]: value})
+        }
+        const onChangePaid = () => {
+            this.setState ({paid: !this.state.paid})
         }
         return (
             <div style={{marginTop: "10px", display:"flex", justifyContent:"center"}}>
@@ -113,8 +124,10 @@ class TakeOrders extends React.Component {
                             })}
                             </tbody>
                         </Table>
+                        <Input style={{marginBottom:"10px", marginTop:"10px"}} placeholder="Enter your name" value={this.state.name} onChange={onChange} name="name" />
+                        <div><Input style={{marginRight:"10px"}} checked={this.state.paid} onChange={onChangePaid} type="checkbox" /> Paid</div>
                         <h5 style={{textAlign:"right"}}>TOTAL: Rs. {this.state.total}</h5>
-                        {!this.state.isLoading && <Button style={{width:"max-content", fontWeight:"bold"}} color="success" onClick={onSubmitHandler}>
+                        {!this.state.isLoading && <Button disabled={!this.state.paid} style={{width:"max-content", fontWeight:"bold"}} color="success" onClick={onSubmitHandler}>
                             SUBMIT
                         </Button>}
                         {this.state.isLoading && <Button disabled={true} style={{width:"max-content", fontWeight:"bold"}} color="primary" onClick={onSubmitHandler}>

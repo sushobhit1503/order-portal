@@ -42,8 +42,8 @@ class AllOrders extends React.Component {
                             <thead>
                                 <tr>
                                     <th>ORDER NO.</th>
+                                    <th>ITEMS</th>
                                     <th>NAME</th>
-                                    <th>PREP STATUS</th>
                                     <th>DELIVER</th>
                                 </tr>
                             </thead>
@@ -65,7 +65,7 @@ class AllOrders extends React.Component {
                                             })}
                                         </td>
                                         <td>
-                                            {each.prepStatus ? <Badge color="success">PREPARED</Badge> : <Badge color="warning">WAITING</Badge> }
+                                            {each.name}
                                         </td>
                                         <td>
                                             {!each.serveStatus ? <Button disabled={this.state.isButton} onClick={() => onServeHandler(each)} style={{margin:"10px", padding:"10px", cursor:"pointer"}} color="success">{this.state.isButton ? 'LOADING' : 'DELIVER'}</Button> : <Badge color="warning">WAITING</Badge> }
